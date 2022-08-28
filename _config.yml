@@ -1,12 +1,12 @@
 site: KimDoubleB
 title: KimDoubleB
-greetings: Hi 👋
+greetings: KimDoubleB news 👋
 description: >-
   Code never lies
 lang: ko
 timezone:  Asia/Seoul
 repo: https://github.com/KimDoubleB/news
-data-theme: dark # default theme "dark" | "light"
+data-theme: light # default theme "dark" | "light"
 discus-identifier: kimdoubleb-news
 
 author:
@@ -23,12 +23,12 @@ googlewebfonts: family=Play:wght@400;700&family=Source+Code+Pro:ital,wght@0,200;
 
 # URL settings
 url: "https://kimdoubleb.github.io"
-baseurl: "/news" # sub folder for jekyll site. only if jekyll site not in root of host. leave blank if not wishd. always add / in front.
-permalink: pretty
-
+baseurl: "/news"
 # local
 # url: "http://localhost:4000" # 
 # baseurl: "" # 
+permalink: pretty
+
 
 
 markdown: kramdown
