@@ -4,7 +4,7 @@
  <title>KimDoubleB</title>
  <link href="https://kimdoubleb.github.io/news/atom.xml" rel="self"/>
  <link href="https://kimdoubleb.github.io/news/"/>
- <updated>2022-09-04T22:42:45+09:00</updated>
+ <updated>2022-09-04T22:48:30+09:00</updated>
  <id>https://kimdoubleb.github.io</id>
  <author>
    <name>KimDoubleB</name>
@@ -92,6 +92,8 @@
   &lt;p&gt;Slack 대신 Mattermost로 전환했다가 Server/DB가 날라가면 어떻게 될까…? (거의 그럴 일 없겠지만)&lt;/p&gt;
 &lt;/blockquote&gt;
 
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
 &lt;p&gt;기술이 발달되고 오픈소스 생태계가 확장됨에 따라 이런 7년이라는 시간도 점점 짧아지고 있다고 한다.&lt;/p&gt;
 &lt;ul&gt;
   &lt;li&gt;소프트웨어가 만들어지기 쉬워지기도 했고, 어느정도 유명한 오픈소스가 되면 많은 기여자들이 생겨 개발에 속도가 붙는 것도 영향이 있을 것 같다.&lt;/li&gt;
@@ -107,11 +109,11 @@
 
 &lt;p&gt;&lt;a href=&quot;https://codechacha.com/ko/java-countdownlatch/&quot;&gt;(Link) CountDownLatch 사용방법&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;최근에 이전에 작성했던 코드를 보던 중 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CountDownLatch&lt;/code&gt;를 사용해 테스트를 구성했던 것을 보게 되었다. 작성할 땐, 찾아보면서 학습해 적용했던 것 같은데 (선배 개발자 분이 사용법을 설명해주시기도 했고) 오랫동안 활용을 안했더니 오랜만에 본 코드를 깔끔하게 이해할 수가 없었다 🥲.&lt;/p&gt;
+&lt;p&gt;최근에 이전에 작성했던 코드를 보던 중 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CountDownLatch&lt;/code&gt;를 사용해 테스트를 구성했던 것을 보게 되었다.&lt;/p&gt;
 
-&lt;p&gt;그래서 이에 대해 다시 한 번 학습했다.&lt;/p&gt;
+&lt;p&gt;작성할 땐, 찾아보면서 학습해 적용했던 것 같은데 (선배 개발자 분이 사용법을 설명해주시기도 했고) 오랫동안 활용을 안했더니 오랜만에 본 코드를 깔끔하게 이해할 수가 없었다 🥲. 그래서 이에 대해 다시 한 번 학습했다.&lt;/p&gt;
 
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CountDownLatch&lt;/code&gt;는 Concurrency (병행성)에 관련되어 Java에서 제공하는 기능이다 (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;java.util.concurrent&lt;/code&gt; 패키지 내 속해있다).&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CountDownLatch&lt;/code&gt;는 Concurrency (병행성)에 관련되어 Java에서 제공하는 기능이다 (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;java.util.concurrent&lt;/code&gt; 패키지 내 존재).&lt;/p&gt;
 
 &lt;p&gt;큰 기능만 소개하면 여러 Thread를 관리할 때 다른 Thread 작업이 완료될 때까지 기다리게 만들 수 있다. 즉, Thread 간의 순서를 조작하는데 사용할 수 있다.&lt;/p&gt;
 
@@ -164,7 +166,7 @@
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;2개의 쓰레드를 멈춰놓고, Resilience4j의 설정 값이 올바른가 확인하는 테스트 코드&lt;/li&gt;
+  &lt;li&gt;2개의 쓰레드를 멈춰놓고, Resilience4j bulkhead ThreadPool 값이 올바른가 확인하는 테스트 코드&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
