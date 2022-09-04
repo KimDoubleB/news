@@ -4,13 +4,321 @@
  <title>KimDoubleB</title>
  <link href="https://kimdoubleb.github.io/news/atom.xml" rel="self"/>
  <link href="https://kimdoubleb.github.io/news/"/>
- <updated>2022-08-28T23:09:10+09:00</updated>
+ <updated>2022-09-04T22:42:45+09:00</updated>
  <id>https://kimdoubleb.github.io</id>
  <author>
    <name>KimDoubleB</name>
    <email>deadlock@kakao.com</email>
  </author>
 
+ 
+ <entry>
+   <title>#1 News</title>
+   <link href="https://kimdoubleb.github.io/news/2022/09/04/1-news"/>
+   <updated>2022-09-04T00:00:00+09:00</updated>
+   <id>https://kimdoubleb.github.io/2022/09/04/#1-news</id>
+   <content type="html">&lt;p&gt;첫 News !&lt;/p&gt;
+
+&lt;p&gt;여러가지 일로 갑자기 바빠져서 많이는 정리하지 못했다.&lt;/p&gt;
+
+&lt;p&gt;다음엔 개발 뿐 아니라 여러 방면으로 더 넓혀가봐야겠다.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;reactor-expand와-pagination&quot;&gt;Reactor expand와 Pagination&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://joshlong.com/jl/blogpost/pagination_in_a_reactive_application.html&quot;&gt;(Link) Pagination in a reactive application&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Reactor type(Mono, Flux)에서 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;expand&lt;/code&gt; method를 사용해 Pagination을 구현한 방법에 대해 설명한 글이다.&lt;/p&gt;
+
+&lt;p&gt;사실 이번 글을 통해 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;expand&lt;/code&gt; method를 처음 알았다. BFS를 지원하는 메서드이며, 재귀적으로 data를 쌓아 조회할 수 있다. DFS를 위해서는 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;expandDeep&lt;/code&gt; method를 사용할 수 있다. 사용하는 법에 대해 잘 모르면 &lt;a href=&quot;https://www.vinsguru.com/flux-expand-vs-expanddeep/&quot;&gt;이 글을 참조&lt;/a&gt;하자.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;expand&lt;/code&gt;를 사용하면 특수한 경우의 Pagination를 구현할 수 있다. 위 글에서는 특정 조건의 모든 비디오를 조회하고 싶은 경우인데, Pagination이 구현되어있어 조건을 붙여서 조회하면 특정 페이지에 대해서만 결과물이 나와 문제가 있는 경우를 제시한다.&lt;/p&gt;
+
+&lt;p&gt;이런 경우 따로 모든 비디오에 대해 특정 조건으로 검색하는 method를 만들거나 지원해야한다. 하지만 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;expand&lt;/code&gt;를 사용하면 여러 페이지를 재귀적으로 조회하며 조건에 맞는 모든 비디오를 찾을 수 있다.&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nc&quot;&gt;Flux&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Video&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;getAllVideosByPlaylist&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;playlistId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nc&quot;&gt;Flux&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;PlaylistVideos&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;expanded&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;getVideosByPlaylist&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;playlistId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;expand&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;playlistVideos&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;kt&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nextPageToken&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;playlistVideos&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;nextPageToken&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(!&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;StringUtils&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;hasText&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nextPageToken&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;c1&quot;&gt;// 마지막 페이지인 경우, empty를 반환해서 종료.&lt;/span&gt;
+                &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Mono&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;empty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+            &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;c1&quot;&gt;// 재귀적으로 데이터를 쌓을 수 있게 설정.&lt;/span&gt;
+                &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;getVideosByPlaylist&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;playlistId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nextPageToken&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt; 
+            &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;});&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;expanded&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;flatMap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;plv&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Flux&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;fromIterable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;plv&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;videos&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()));&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;이에 대해 &lt;a href=&quot;https://github.com/KimDoubleB/spring-learning/blob/master/reactor-exapnd/src/main/java/com/example/reactorexapnd/ReactorExapndTest.java#L27-L33&quot;&gt;직접 코드를 구성해 테스트&lt;/a&gt; 해보았는데, 필요한 상황에 활용하면 가독성을 향상 시키면서 깔끔하게 코드를 작성할 수 있을 것 같다.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;근데 직접 Persistent Layer에서 이를 사용해 직접 쿼리를 DB로 날리게 구성하면, 재귀 횟수에 따라 특정 횟수 이상의 쿼리를 전송할 것 같다. 그런 것은 유의해야 되지 않을까?&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;오픈소스-대체제가-나오는-데까지-걸리는-시간&quot;&gt;오픈소스 대체제가 나오는 데까지 걸리는 시간&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://staltz.com/time-till-open-source-alternative.html&quot;&gt;(Link) TIME TILL OPEN SOURCE ALTERNATIVE&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://news.hada.io/topic?id=7281&amp;amp;utm_source=slack&amp;amp;utm_medium=bot&amp;amp;utm_campaign=T012P6ABDHQ&quot;&gt;GeekNews에서 소개 된 글&lt;/a&gt;이다.&lt;/p&gt;
+
+&lt;p&gt;상용 소프트웨어에 대한 오픈소스 대체제가 만들어지는데 평균적으로 7년이 걸린다고 한다.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;상용 소프트웨어의 오픈소스 대체제&lt;/code&gt;의 예시는 다음과 같다.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Unix -&amp;gt; GNU/Linux&lt;/li&gt;
+  &lt;li&gt;Photoshop -&amp;gt; GIMP&lt;/li&gt;
+  &lt;li&gt;1Password -&amp;gt; Bitwarden&lt;/li&gt;
+  &lt;li&gt;Slack -&amp;gt; Mattermost&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;7년이면 엄청 짧다고 생각했는데, 글에 의하면 &lt;em&gt;독점 소프트웨어가 수익을 내기에는 충분한 시간&lt;/em&gt;이라고 한다.&lt;/p&gt;
+
+&lt;p&gt;상용 서비스를 이미 도입한 업체에서는 다른 서비스(오픈소스…)로 변경하기 어렵다는 점도 생각해야할 것 같고, 오픈소스로 만들어진 대체제가 완벽히 모든 기능을 대체할 수 있는가도 고려해야할 것 같다.&lt;/p&gt;
+
+&lt;p&gt;또 중요한게 오픈소스 대체제들은 거의 self hosted로 운영될 것 같은데, 이걸 고려하면 관리해야 할 담당자가 있어야 한다는 것을 의미하고, 그 대체제로부터 발생하는 문제의 책임은 누가 질 것인가도 생각해야 할 것 같다.&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;Slack 대신 Mattermost로 전환했다가 Server/DB가 날라가면 어떻게 될까…? (거의 그럴 일 없겠지만)&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;기술이 발달되고 오픈소스 생태계가 확장됨에 따라 이런 7년이라는 시간도 점점 짧아지고 있다고 한다.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;소프트웨어가 만들어지기 쉬워지기도 했고, 어느정도 유명한 오픈소스가 되면 많은 기여자들이 생겨 개발에 속도가 붙는 것도 영향이 있을 것 같다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;옛날에도 소프트웨어를 만들어 돈을 번다는게 어렵다고 생각했는데, 이런 걸 보면 정말 독보적인게 아닌 이상 소프트웨어로 돈 벌기는 더 어려워지는 것 같다. 대신 다른 부분에서 돈을 벌 수 있는 방향이나 긍정적 영향이 늘어나겠지만 말이다.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;countdownlatch-이용하기&quot;&gt;CountDownLatch 이용하기&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://codechacha.com/ko/java-countdownlatch/&quot;&gt;(Link) CountDownLatch 사용방법&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;최근에 이전에 작성했던 코드를 보던 중 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CountDownLatch&lt;/code&gt;를 사용해 테스트를 구성했던 것을 보게 되었다. 작성할 땐, 찾아보면서 학습해 적용했던 것 같은데 (선배 개발자 분이 사용법을 설명해주시기도 했고) 오랫동안 활용을 안했더니 오랜만에 본 코드를 깔끔하게 이해할 수가 없었다 🥲.&lt;/p&gt;
+
+&lt;p&gt;그래서 이에 대해 다시 한 번 학습했다.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CountDownLatch&lt;/code&gt;는 Concurrency (병행성)에 관련되어 Java에서 제공하는 기능이다 (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;java.util.concurrent&lt;/code&gt; 패키지 내 속해있다).&lt;/p&gt;
+
+&lt;p&gt;큰 기능만 소개하면 여러 Thread를 관리할 때 다른 Thread 작업이 완료될 때까지 기다리게 만들 수 있다. 즉, Thread 간의 순서를 조작하는데 사용할 수 있다.&lt;/p&gt;
+
+&lt;p&gt;간략히 설명하면 지원하는 기능은 다음과 같다.&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// CountDownLatch 선언 - 5개의 CountDown 설정&lt;/span&gt;
+&lt;span class=&quot;nc&quot;&gt;CountDownLatch&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;countDownLatch&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CountDownLatch&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// Latch의 숫자가 1개씩 내려간다.&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;countDownLatch&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;countDown&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// Latch가 0이 될 때까지 기다린다.&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;countDownLatch&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;await&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// Latch가 0이 될 때까지 기다린다. 하지만 5초가 지나면, 그냥 다음 코드를 진행한다.&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;countDownLatch&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;await&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;TimeUnit&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;SECONDS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;코드에서 볼 수 있듯 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;await&lt;/code&gt;을 통해 Thread 작업을 묶어둘 수 있다.&lt;/p&gt;
+
+&lt;p&gt;코드 흐름이 가끔 헷갈릴 수 있는데 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Latch&lt;/code&gt;는 ‘자물쇠’라는 뜻으로 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CountDownLatch&lt;/code&gt;는 ‘카운트 다운이 끝나면 열리는 자물쇠’라고 해석하면 이해하기 쉽다 (개인적인 의견).&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CountDownLatch&lt;/code&gt;를 활용해 아래와 같이 Test code를 구성했었다. (&lt;a href=&quot;https://github.com/resilience4j/resilience4j/blob/19e8b5e5835b219938ae7a787583ed0b08ee1956/resilience4j-bulkhead/src/test/java/io/github/resilience4j/bulkhead/ThreadPoolBulkheadTest.java#L213-L235&quot;&gt;Code Link&lt;/a&gt;)&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@Test&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;testWithSynchronousQueue&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nc&quot;&gt;ThreadPoolBulkhead&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bulkhead&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ThreadPoolBulkhead&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;of&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;test&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ThreadPoolBulkheadConfig&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;custom&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+            &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;maxThreadPoolSize&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;coreThreadPoolSize&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;queueCapacity&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;given&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;helloWorldService&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;returnHelloWorld&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;willReturn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Hello world&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;nc&quot;&gt;CountDownLatch&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;latch&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CountDownLatch&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;bulkhead&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;executeRunnable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;CheckedRunnable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;of&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;latch:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;await&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;unchecked&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;bulkhead&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;executeRunnable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;CheckedRunnable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;of&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;latch:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;await&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;unchecked&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;assertThatThrownBy&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; 
+        &lt;span class=&quot;n&quot;&gt;bulkhead&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;executeCallable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;helloWorldService:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;returnHelloWorld&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;isInstanceOf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;BulkheadFullException&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;assertThat&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bulkhead&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getMetrics&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getQueueDepth&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;isZero&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;assertThat&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bulkhead&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getMetrics&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getRemainingQueueCapacity&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;isZero&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;assertThat&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bulkhead&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getMetrics&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getQueueCapacity&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;isZero&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;assertThat&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bulkhead&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getMetrics&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getActiveThreadCount&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;isEqualTo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;assertThat&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bulkhead&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getMetrics&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getThreadPoolSize&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;isEqualTo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;latch&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;countDown&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;2개의 쓰레드를 멈춰놓고, Resilience4j의 설정 값이 올바른가 확인하는 테스트 코드&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;etc-디렉터리&quot;&gt;etc 디렉터리&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://netmarble.engineering/watch-out-important-files-in-etc-directory/?fbclid=IwAR3oCtQmWQDCHEEIazydZJ3k4zDAVD_TLTeJCULCBsUMGxWg8VBC7qGJYEw&quot;&gt;(Link) etc 디렉터리에 있는 소중한 아이들&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;넷마블의 보안개발팀에서 작성한 기술 블로그이다. Linux &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc&lt;/code&gt; 디렉터리 내 보안적으로 중요한 설정파일들에 대해 이야기한다.&lt;/p&gt;
+
+&lt;p&gt;사실 회사에서는 보안팀에서 관리 및 설정 해주셔서 직접 신경 쓸 생각을 못했는데, 간단하게 보기 좋았던 것 같다.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/hosts&lt;/code&gt; 같은 경우 사내 사이트를 도메인으로 접속하기 위해 로컬에서 설정을 바꿔 활용하는 경우가 있는데, 이걸 이용해 불법적인 행위(해킹 등)을 할 수 있다는 것이 리마인드 됬다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;위 글 말고도, 넷마블 보안팀에서 작성하는 것 같은데 &lt;a href=&quot;https://netmarble.engineering/tag/%ec%97%ac%ea%b8%b0%eb%b3%b4%ea%b8%b0/&quot;&gt;관련 보안 시리즈 글들&lt;/a&gt;이 있다. Linux의 보안을 생각해야할 때 적혀있는 팁들이여서 필요할 때 훑어봐도 좋을 것 같다.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;java-17-기능들&quot;&gt;Java 17 기능들&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://madplay.github.io/post/what-is-new-java-17&quot;&gt;(Link) 자바 17의 새로운 기능들, 3년 만에 LTS 버전 릴리즈!&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;회사/혼자 개발할 때, 거의 Java 17을 사용하고 있다. LTS 버전이기도 하고, 버전이 올라갈 수록 편한 기능들과 성능적으로도 향상되었다고 알고 있기에 사용하고 있다.&lt;/p&gt;
+
+&lt;p&gt;회사 내에서 Java 17을 도입할 때, 팀 내 리서치 공유 해주셨었는데 좀 써오다보니 맨날 쓰던 기능만 사용해서 어떤 기능들이 새로 생겼는지 맨날 까먹어서 이번에 다시 정리했다.&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;(주의) Java 17에서 새롭게 나온 기능이라기보다 Java 11과 비교했을 때 새로운 기능이다. Java 11 후의 버전에서 나온 기능들이라고 생각하면 된다.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;앗, 내가 맨날 사용한 Java 17 기능 (Java 11과 비교해)은 다음과 같다.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;record&lt;/code&gt; 사용&lt;/li&gt;
+  &lt;li&gt;String block 사용 (Query, Test code 때 사용하면 좋다)&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Collectors.toList()&lt;/code&gt; 대신 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Stream.toList()&lt;/code&gt; 사용&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;위 기능들을 제외하고, 다른 새로운 기능들 중 살펴볼 만한 것은 다음과 같다.&lt;/p&gt;
+
+&lt;h3 id=&quot;pattern-matching&quot;&gt;Pattern Matching&lt;/h3&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;instanceof&lt;/code&gt;를 통해 type conversion을 하며 사용했었는데, type conversion을 따로 수동으로 작성해주지 않아도 뒤에 변환 할 변수명을 선언해줌으로써 바로 사용할 수 있다.&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// AS-IS&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;instanceof&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;OAuthUser&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// type conversion 필요&lt;/span&gt;
+    &lt;span class=&quot;nc&quot;&gt;OAuthUser&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;oauthUser&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;OAuthUser&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt; 
+    &lt;span class=&quot;c1&quot;&gt;// ... &lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// TO-BE&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;instanceof&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;OAuthUser&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;oauthUser&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// type conversion 불필욘&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;switch&lt;/code&gt;문에서도 이를 활용할 수 있다 (Preview여서 설정 따로 필요).&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// AS-IS&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;getDoubleUsingIf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Object&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;o&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;o&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;instanceof&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Integer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Integer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;o&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;doubleValue&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;o&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;instanceof&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Float&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Float&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;o&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;doubleValue&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;o&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;instanceof&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Double&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;parseDouble&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(((&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;o&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// TO-BE&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;getDoubleUsingSwitch&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Object&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;o&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;switch&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;o&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Integer&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;doubleValue&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Float&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;doubleValue&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Double&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;parseDouble&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;default&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;};&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;sealed-classes&quot;&gt;Sealed classes&lt;/h3&gt;
+
+&lt;p&gt;말 그대로 클래스를 봉인하는 기능. 
+‘엥 그럼 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;final&lt;/code&gt;과 뭐가 다르지?’ 할 수 있는데, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;final&lt;/code&gt; class는 절대 상속이 불가능하지만 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sealed&lt;/code&gt; class는 허용할 class만이 상속해 확장할 수 있다.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;봉인(&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sealed&lt;/code&gt;), 허용(&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;permit&lt;/code&gt;), 봉인해제(&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;non-sealed&lt;/code&gt;) 키워드들이 사용된다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;아래 코드는 &lt;a href=&quot;https://madplay.github.io/post/what-is-new-java-17&quot;&gt;위 참조 링크&lt;/a&gt;에서 나온 예시.&lt;/p&gt;
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// `Person`는 허용된(permits) 서브 클래스만 확장할 수 있다.&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;sealed&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Person&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;permits&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Developer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Designer&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// `Developer` 클래스는 봉인이 해제되었다.&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;non&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sealed&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Developer&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Person&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// 봉인이 해제된 `Student` 클래스는 다른 서브 클래스에서 확장 가능하다.&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// 그리고 자기 자신을 Developer 봉인(sealed)할 수 있다. &lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;sealed&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Student&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Developer&lt;/span&gt; 
+    &lt;span class=&quot;n&quot;&gt;permits&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;HighSchoolStudent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MiddleSchoolStudent&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// 이 클래스는 `HighSchoolStudent`, `MiddleSchoolStudent` 클래스만 확장 가능하다.&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// permitted 서브 클래스는 확장을 못하게 하거나(final),&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// 서브 클래스를 가진채로 자신을 봉인하거나(sealed), 봉인을 해제(non-sealed)해야만 한다.&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;HighSchoolStudent&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Student&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;non&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sealed&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MiddleSchoolStudent&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Student&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;stable-diffusion&quot;&gt;Stable Diffusion&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://thealgorithmicbridge.substack.com/p/stable-diffusion-is-the-most-important&quot;&gt;(Link) Stable Diffusion Is the Most Important AI Art Model Ever&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;요즘 딥러닝, 더 자세히 말하면 Computer vision 쪽에서는 이미지를 만들어내는 기술들이 핫한 것 같다.&lt;/p&gt;
+
+&lt;p&gt;얼마 전까지 &lt;a href=&quot;https://openai.com/dall-e-2/&quot;&gt;DALL·E 2&lt;/a&gt;를 접하고 정말 딥러닝이 갈수록 대단하구나 하는 생각이 들었다. 역시 미래는 여긴가… 이런 생각도 하고….&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;DALL·E 2는 특정 Sentence를 입력하면 그에 대한 이미지를 생성하는 학습 모델이다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;이번엔 오픈소스로 나온 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Stable Diffusion&lt;/code&gt;도 DALL·E 2보다 우수한 품질의 이미지를 생성하는 모델이라고 한다.
+직접 &lt;a href=&quot;https://beta.dreamstudio.ai/dream&quot;&gt;Dreamstudio&lt;/a&gt;에서 문장을 통해 생성할 수 있다. 직접 해봤는데, 어느정도 정확한?(상상했던?) 이미지가 나온다.&lt;/p&gt;
+
+&lt;p&gt;이러한 모델, 서비스를 보면 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;이미지 생성&lt;/code&gt;이라는 핵심을 통해 여러 서비스로 전파가 될 수 있지 않을까 싶다.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;게임? 예술 교육? Getty images 같은 이미지 판매?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;이런 트렌드를 놓치고 있지 않아야 겠다는 생각이 든다.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>KimDoubleB의 Weekly tech news !</title>
