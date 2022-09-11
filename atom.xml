@@ -4,13 +4,174 @@
  <title>KimDoubleB</title>
  <link href="https://kimdoubleb.github.io/news/atom.xml" rel="self"/>
  <link href="https://kimdoubleb.github.io/news/"/>
- <updated>2022-09-04T22:48:30+09:00</updated>
+ <updated>2022-09-11T17:30:12+09:00</updated>
  <id>https://kimdoubleb.github.io</id>
  <author>
    <name>KimDoubleB</name>
    <email>deadlock@kakao.com</email>
  </author>
 
+ 
+ <entry>
+   <title>#2 News</title>
+   <link href="https://kimdoubleb.github.io/news/2022/09/11/2-news"/>
+   <updated>2022-09-11T00:00:00+09:00</updated>
+   <id>https://kimdoubleb.github.io/2022/09/11/#2-news</id>
+   <content type="html">&lt;p&gt;요즘 개발 기본 원리들을 다시 학습하고 있는데, 오히려 새로운 것(Application 사용법 등)을 익힐 때보다 더 성장하고 있다는 느낌이 든다.&lt;/p&gt;
+
+&lt;p&gt;원리에 대해 파악하니 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;A 기술이 이렇게 구현됬었겠구나&lt;/code&gt;하며 일종의 지식적 쾌락(?)을 느끼고 있다. 회사에서 하던 작업들에 대해 아이디어가 떠오르기도 하고 말이다.&lt;/p&gt;
+
+&lt;p&gt;그럼, 이번 주의 뉴스 시작!&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;spatial-queries-with-mysql&quot;&gt;Spatial queries with MySQL&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.endpointdev.com/blog/2021/03/spatial-queries-with-mysql/&quot;&gt;(Link) Spatial queries with MySQL&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;MySQL에서는 공간 데이터, 연산을 지원하고 있다.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;포인트(좌표)/라인/폴리곤 등의 데이터들을 정의하고 저장할 수 있다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;중요한 것이 저장 뿐 아니라 Query를 통해 연산을 지원한다는 것이다.&lt;/p&gt;
+
+&lt;p&gt;공간 관계(Relation)함수와 연산(Operator)함수로 나뉜다.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;공간 관계함수: 두 공간 데이터 간의 관계를 연산해 반환한다.
+    &lt;ul&gt;
+      &lt;li&gt;동일한지?(&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ST_Equals&lt;/code&gt;), 겹치는 곳이 있는지?(&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ST_Disjoint&lt;/code&gt;, …), 안에 속하는지?(&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ST_Within&lt;/code&gt;), 접점이 있는지?(&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ST_Touches&lt;/code&gt;) 등&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;공간 연산함수: 두 공간 데이터 간의 연산을 통해 새로운 공간 데이터를 반환한다.
+    &lt;ul&gt;
+      &lt;li&gt;교집합 공간 구하기(&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ST_Intersection&lt;/code&gt;), 합집합 공간 구하기(&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ST_Union&lt;/code&gt;), 차집합 공간 구하기(&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ST_Difference&lt;/code&gt;), 최소 MBR(Minimum Bounding Rectangle) 폴리곤 구하기(&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ST_Envelope&lt;/code&gt;) 등&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;이 타입과 함수들을 사용하면 GPS 상의 데이터들로 여러 로직을 구성할 수 있다. 
+이번에 해커톤에서 GPS 좌표 데이터를 이용해 폴리곤을 구성했고, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ST_Within&lt;/code&gt; 연산을 통해 &lt;a href=&quot;https://github.com/Hurry-Pizza/Mine-Server/blob/master/src/main/java/com/hurrypizza/mine/domain/path/PathRouteRepository.java#L35&quot;&gt;특정 폴리곤에 속하는 폴리곤들의 목록을 반환해주는 작업&lt;/a&gt;을 진행했었다.&lt;/p&gt;
+
+&lt;p&gt;속도 측면에서 모르겠지만, 만약 고성능/복잡한 연산이 필요하다면 PostgreSQL의 PostGIS가 더 적합할 수 있다고 한다. 만약 MySQL을 사용하고 있고, Spatial data 저장 및 연산이 필요하다면 활용해보는 것도 좋을 것 같다.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;infcon-2022&quot;&gt;INFCON 2022&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.inflearn.com/course/infcon2022&quot;&gt;(Link) INFCON 2022 보기&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.inflearn.com/&quot;&gt;인프런 Inflearn&lt;/a&gt;에서 주최한 컨퍼런스인 INFCON 2022가 코엑스에서 열렸다.&lt;/p&gt;
+
+&lt;p&gt;단순히 개발 언어/프레임워크에 초점을 맞춘 것이 아니라 ‘성장’에 초점을 맞춘 듯 했다. 그래서 그런지 가볍게 볼 수 있는? 또 다른 컨퍼런스에서 볼 수 없던? 강연들이 있어서 보기 좋았다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;성공하는 스터디를 만드는 10가지 방법, 나와 팀을 성장시키는 리뷰들, 어느 날 고민 많은 주니어 개발자가 찾아왔다 등 성장에 초점을 맞춘 강연들이 있기도 하고,&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;서버비 0원 클라우드 큐 도입으로 해냈습니다!, 이 이력서 누구 거에요? 등 제목으로 관심이 쏠리는 강연들도 있다.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;아직 거의 보진 못했는데, 시간날 때마다 차차 보면 좋을 것 같다.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;프로그래머가-이메일에-대해-믿는-거짓들&quot;&gt;프로그래머가 이메일에 대해 믿는 거짓들&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://news.hada.io/topic?id=7332&amp;amp;utm_source=slack&amp;amp;utm_medium=bot&amp;amp;utm_campaign=T012P6ABDHQ&quot;&gt;(Link) 프로그래머가 이메일에 대해 믿는 거짓들&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;GeekNews에 소개된 글이다. 원본은 &lt;a href=&quot;https://beesbuzz.biz/code/439-Falsehoods-programmers-believe-about-email&quot;&gt;여기&lt;/a&gt;이다. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;개발자가 이메일을 활용한 로직을 구성할 때, 이러한 거짓들을 바탕으로 개발해서는 안된다&lt;/code&gt;를 염두에 두고 작성한 글이다.&lt;/p&gt;
+
+&lt;p&gt;엄청나게 많은 거짓들?이 존재하는데, ‘엥, 이건 당연히 믿으면 안되는거 아니야?’라는 생각이 들다가도, ‘엥? 이건 맞는거 아니였어?’라는 생각도 든다.&lt;/p&gt;
+
+&lt;p&gt;웃겼던 항목이 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;사용자들이 자신이 이메일 주소를 알고 있다&lt;/code&gt; 였다. 당연히 알 것이라고 생각하고 로직을 구성하지는 말자. (이메일 찾기라도 구성해놓자)&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;awesome-falsehood&quot;&gt;Awesome Falsehood&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/kdeldycke/awesome-falsehood&quot;&gt;(Link) Github Awesome Falsehood&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;위에서 언급한 이메일에 대해 믿는 거짓들 처럼, 여러 개발 항목들에 대해 믿는 거짓들을 큐레이팅하고 있는 Github 저장소이다.&lt;/p&gt;
+
+&lt;p&gt;Email 부터 Date/Time, Phone Numbers, Geography, Networks 등 항목들이 있다.&lt;/p&gt;
+
+&lt;p&gt;만약 해당 도메인을 다룬다거나 한다면, 개발 전에 한번 읽어보고 믿지 말아야 하는 것들을 리마인드 해보는 것도 좋겠다.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;iphone-14-pro-및-iphone-14-pro-max&quot;&gt;iPhone 14 Pro 및 iPhone 14 Pro Max&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.apple.com/kr/newsroom/2022/09/apple-debuts-iphone-14-pro-and-iphone-14-pro-max/&quot;&gt;(Link) Apple, iPhone 14 Pro 및 iPhone 14 Pro Max 첫 공개&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;IPhone 14 Pro, IPhone 14 Pro Max가 공개되었다 (IPhone 14, AirPods Pro2, … 등도 함께 공되었다).&lt;/p&gt;
+
+&lt;p&gt;제일 인상 깊었던 것은 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Dynamic Island&lt;/code&gt;이다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;기본적인 외형(폼팩터)은 차이가 별로 없지만, 펀치홀 디스플레이가 들어갔다. 근데 Apple은 이를 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Dynamic Island&lt;/code&gt;로 정의하고, 이 펀치홀 디자인을 적극적으로 활용한 UI를 추가했다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;이전 안드로이드 진영에서도 전면 카메라를 최대한 숨기기 위한 방식으로 펀치홀 디스플레이를 많이 사용했으나, 이를 활용한 기능적 요소는 존재하지 않았다. 오히려 하드웨어 방면에서 더 나아가 펀치홀을 아예 없애는 기술들을 사용해왔다.&lt;/p&gt;
+
+&lt;p&gt;하지만 Apple은 Apple인가보다. 사람들에게 어색할 수 있는? 아름답게 느껴지지 않는 펀치홀 디자인을 UI요소로, 사용자와의 Interaction요소로 추가해 활용하고, 또 이에 맞는 완벽한 단어인 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Dynamic Island&lt;/code&gt; 로 마케팅을 한다니. 존경스럽다.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;kubernetes-security-checklist&quot;&gt;Kubernetes Security Checklist&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://kubernetes.io/docs/concepts/security/security-checklist/&quot;&gt;(Link) Security Checklist&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;쿠버네티스 공식문서에서 제공하고 있는 보안 체크리스트이다.&lt;/p&gt;
+
+&lt;p&gt;어느정도 쿠버네티스를 활용할 줄 알고 사용하고 있다면, 해당 체크리스트를 통해 얼마나 잘 지키고 있는지 확인해보자.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;이 문서의 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Caution&lt;/code&gt;에서 설명하고 있듯 이 보안 체크리스트를 완벽히 했다고 보안적으로 완벽한 것은 아니다. 보안은 계속적인 관심(attention)과 향상(imporovement)가 중요하기 때문에 오히려 이 보안 체크리스트는 우수한 보안을 위한 첫 번째 스텝일 수 있다고 설명하고 있다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Authentication &amp;amp; Authorization&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Network Security&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Pod Security&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Secrets&lt;/code&gt; 등의 항목으로 체크리스트를 제공하고 있고, 하위에 그 항목에 대한 설명도 제공한다.&lt;/p&gt;
+
+&lt;p&gt;예를 들어, 아래와 같은 항목들이 있다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ConfigMaps&lt;/code&gt; 는 Confidential data를 가지고 있어서는 안된다.&lt;/li&gt;
+  &lt;li&gt;Ingress, egress network policy가 클러스터의 모든 workload들에 적용되어져 있다.&lt;/li&gt;
+  &lt;li&gt;컨테이너 이미지들은 불필요한 컨텐츠를 최소화한다.&lt;/li&gt;
+  &lt;li&gt;컨테이너 이미지는 생성 및 배포 중에 정기적으로 스캔되며 취약하다고 알려진 소프트웨어는 패치된다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;architecture-notes&quot;&gt;Architecture Notes&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://architecturenotes.co/&quot;&gt;(Link) Architecture Notes - System Design &amp;amp; Software Architectures Explained&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;여러 기술의 아키텍처를 설명하는 사이트이다.&lt;/p&gt;
+
+&lt;p&gt;그림을 통해 Overview를 제공하고 글로 설명하는데, 엄청 깔끔하고 중요한 부분만 딱 적어놓았다.&lt;/p&gt;
+
+&lt;p&gt;메모리 타입, 암호화 방식 같은 기본적 요소에 대한 설명부터 데이터베이스에 대해 알아야하는 것들, 레디스 구조 등 많이 활용되는 애플리케이션에 대한 내용도 있다.&lt;/p&gt;
+
+&lt;p&gt;이것도 시간 날 때(심심할 때), 한번 씩 읽어보면 좋을 것 같다. 재밌는 내용이 많아 보인다.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>#1 News</title>
