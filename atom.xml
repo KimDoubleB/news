@@ -4,13 +4,234 @@
  <title>KimDoubleB</title>
  <link href="https://kimdoubleb.github.io/news/atom.xml" rel="self"/>
  <link href="https://kimdoubleb.github.io/news/"/>
- <updated>2022-09-11T21:06:22+09:00</updated>
+ <updated>2022-09-25T14:19:45+09:00</updated>
  <id>https://kimdoubleb.github.io</id>
  <author>
    <name>KimDoubleB</name>
    <email>deadlock@kakao.com</email>
  </author>
 
+ 
+ <entry>
+   <title>#3 News</title>
+   <link href="https://kimdoubleb.github.io/news/2022/09/25/3-news"/>
+   <updated>2022-09-25T00:00:00+09:00</updated>
+   <id>https://kimdoubleb.github.io/2022/09/25/#3-news</id>
+   <content type="html">&lt;p&gt;가을이 오고 있다.&lt;/p&gt;
+
+&lt;p&gt;올해도 어느덧 다 지나가고 있는 것 같다.&lt;/p&gt;
+
+&lt;p&gt;더 뿌듯한, 자랑스러운 올해를 만들기 위해 노력해야지.&lt;/p&gt;
+
+&lt;p&gt;그럼, 내 생일이기도 한 오늘의 뉴스도 시작.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;spring-data-r2dbc-pagination&quot;&gt;Spring data r2dbc pagination&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://prateek-ashtikar512.medium.com/r2dbc-pagination-example-1450a5dbdce8&quot;&gt;(Link) Spring data r2dbc pagination example&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;최근 r2dbc, Spring data r2dbc를 사용하고 있다.&lt;/p&gt;
+
+&lt;p&gt;JPA와 여러가지 차이가 있지만, 그래도 Spring data 측에서 Spring data jpa처럼 유사하게 제공을 하고 있어  사용하는 측면에서는 비슷하게 다룰 수 있다. (JPA와 차이에 대한 내용은 제 블로그 글 참조)&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;근데 하나 차이가 있다면, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Page&lt;/code&gt; 인터페이스이다.&lt;/p&gt;
+
+&lt;p&gt;Spring data jpa를 사용한다면 Pageable 사용 시 다음과 같이 사용할 수 있다.&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;SomeRepository&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;JpaRepository&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Some&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Long&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nc&quot;&gt;Page&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Some&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;findAllBy&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Pageable&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pageable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;하지만 R2dbc의 경우, 이렇게 사용할 수 없다. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Mono&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Flux&lt;/code&gt;로 타입이 제한되기 때문이다.&lt;/p&gt;
+
+&lt;p&gt;즉, 2개 이상의 데이터의 경우 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Page&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;List&lt;/code&gt;가 아닌 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Flux&lt;/code&gt;로 반환된다.&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;SomeRepository&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;R2dbcRepository&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Some&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Long&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nc&quot;&gt;Flux&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Some&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;findAllBy&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Pageable&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pageable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;nc&quot;&gt;Mono&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Page&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Some&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;findAllBy&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Pageable&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pageable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// 불가능&lt;/span&gt;
+    &lt;span class=&quot;nc&quot;&gt;Flux&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Page&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Some&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;findAllBy&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Pageable&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pageable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// 불가능&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;위 R2dbc 예시에서 Parameter로 전달되는 Pageable 인터페이스(PageRequest 구현체)를 통해 Pagination은 구현은 잘 될 수 있다.&lt;/p&gt;
+
+&lt;p&gt;근데 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Page&lt;/code&gt; 타입을 사용한다는 것은 Page 정보(Page size, Page number 등)가 필요해 사용하는 경우가 많은데, 위에서는 그 정보를 받을 수 없다.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;그럼, 이 정보를 어떻게 얻을 수 있을까?&lt;/p&gt;
+
+&lt;p&gt;그 해답은 count 쿼리를 수동으로 구성하고, 이를 사용해 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PageImpl&lt;/code&gt; 인스턴스를 직접 만들어 반환하는 방법이다.&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@Service&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ProductService&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nd&quot;&gt;@Autowired&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ProductRepository&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;productRepository&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Mono&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Page&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Product&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;getProducts&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;PageRequest&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pageRequest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;){&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;productRepository&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;findAllBy&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pageRequest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;collectList&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;zipWith&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;productRepository&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;PageImpl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getT1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pageRequest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getT2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()));&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;이렇게 구성하면, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Mono&amp;lt;Page&amp;lt;Product&amp;gt;&amp;gt;&lt;/code&gt;를 반환할 수 있게 되어 Page 정보들을 반환할 수 있게 된다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;참고로, 위 코드는 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Transactional&lt;/code&gt; annotation이 붙지 않았다. 만약 붙이게 되면 오류가 발생할 수 있다.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Transactional&lt;/code&gt; annotation이 붙으면 내부에서 하나의 Database connection을 사용하게 되고 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zipWith&lt;/code&gt;는 병렬로 수행되기 때문에,  &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;findAllBy&lt;/code&gt; 쿼리와 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;count&lt;/code&gt; 쿼리가 하나의 Connection에서 동시에 실행될 수 있기 때문이다.&lt;/p&gt;
+
+&lt;p&gt;그러므로 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Transactional&lt;/code&gt; 문제를 해결하기 위해서는 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zipWith&lt;/code&gt;가 아닌 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;flatMap&lt;/code&gt; 같은 순차적으로 연산이 동작할 수 있게 구성하거나, 새로운 메서드로 만들어 Transacitonal propagation(전파) 속성을 이용해 새로운 Transaction 내에서 동작(&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;REQUIRES_NEW&lt;/code&gt;)하도록 구성해야 한다. (새로운 메서드로 구성 시에는 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;self invocation&lt;/code&gt; 문제를 조심하자)&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;java-stream-api는-왜-for-loop보다-느릴까&quot;&gt;Java Stream API는 왜 for-loop보다 느릴까?&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://www.angelikalanger.com/Conferences/Videos/Conference-Video-GeeCon-2015-Performance-Model-of-Streams-in-Java-8-Angelika-Langer.html&quot;&gt;(Link) The Performance Model of Streams in Java 8&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://jypthemiracle.medium.com/java-stream-api%EB%8A%94-%EC%99%9C-for-loop%EB%B3%B4%EB%8B%A4-%EB%8A%90%EB%A6%B4%EA%B9%8C-50dec4b9974b&quot;&gt;(Link) 번역 및 해설 - Java Stream API는 왜 for-loop보다 느릴까?&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Java로 개발할 때, 거의 대부분 For loop 대신 Stream을 활용해 구성한다.&lt;/p&gt;
+
+&lt;p&gt;선언식과 또 여러 함수형 메서드를 연결 지을 수 있다는 점, 코드가 간결해지고 사이드 이펙트를 방지할 수 있다는 점 등 장점이 엄청 많기 때문이다.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;근데 저 글에서 나와있듯 알고리즘 문제를 푸는 것에서는 손이 안가게 된다.&lt;/p&gt;
+
+&lt;p&gt;나는 &lt;strong&gt;2가지 이유&lt;/strong&gt;였다.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;알고리즘 문제의 경우, loop 내에서 외부 값을 변경해야할 일이 많다. Stream Pipeline 상에서 값을 계속 주고받기에는 너무 복잡해진다.&lt;/li&gt;
+  &lt;li&gt;for loop보다 느리게 동작한다. 결과 성공시간만 봐도 그렇다.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;2번째 이유에 대해 항상 궁금했었는데 찾아보다가 위 글을 보게 되었고, 엄청 재미있게 읽었다.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;처음에 primitive type int 배열 중 최대 값을 구하는 작업을 비교하는데 for loop가 Stream보다 &lt;strong&gt;15배 정도 빠르게&lt;/strong&gt; 동작한다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;JIT compiler가 for loop에 대해 optimization이 잘되어 있기 때문 
+(즉, Compilation tier가 높게 잡혀 기계어로 동작하게 됨을 의미한다).&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Wrapped class인 Integer와 ArrayList를 사용하면 어떨까?&lt;/code&gt; for loop 성능이 엄청나게 느려진다. 그래도 Stream보다는 빠르다. 하지만 Stream과 차이가 1.27배 정도 밖에 나지 않는다.&lt;/p&gt;
+
+&lt;p&gt;Integer class를 사용하면서 ArrayList를 활용하게 되었는데, 이를 순회하는 것은 매우 비싸기 때문이라고 한다. 어찌되었든 Wrapped class를 다루게되고, 이는 Stack이 아닌 Heap에 저장되게 된다.&lt;/p&gt;
+
+&lt;p&gt;즉, Primitive type은 Stack에서 바로 접근해서 실제 내용을 가져올 수 있는 반면 Wrapped class는 Heap까지 가서 데이터를 찾아와야 하므로 성능에 영향을 주었다고 이야기한다.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Loop 중 아주 비싼 연산(시간복잡도가 큰 작업)을 하게되면 어떻게 될까?&lt;/code&gt; 성능에 더 차이가 없게 된다.&lt;/p&gt;
+
+&lt;p&gt;그 이유에 대해서는 자세히 나오지는 않는데, JIT Compiler의 최적화와 for loop을 구성하는데 부가적인 연산들이 들어가기 때문이라고 추측했다.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;결론적으로 &apos;순회비용&apos;과 &apos;연산비용&apos;이 큰 상황에서는 Stream과 For loop의 성능차이가 크지 않고, 만약 &apos;순회비용&apos;과 &apos;연산비용&apos;이 적다면 For loop 성능이 더 우수하다.&lt;/code&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;(사견) 성능이 중요한 애플리케이션이라면 이런 것들을 고려해야할 것이지만, 그런 것이 아니라면 사실 유지보수성을 위해 Stream을 활용하는 편이 좋지 않을까 싶다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;병렬 스트림과 비교하는 부분도 있는데, 포크 조인 풀 및 어떤 상황에서 활용하는지 등에 대한 내용이 있는데 참고하면 좋을 것 같다.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;비밀번호-암호화---hash-salt&quot;&gt;비밀번호 암호화 - Hash, Salt&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://auth0.com/blog/adding-salt-to-hashing-a-better-way-to-store-passwords/&quot;&gt;(Link) Adding Salt to Hashing: A Better Way to Store Passwords&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://st-lab.tistory.com/100&quot;&gt;(Link) 패스워드의 암호화와 저장&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;보안이라고는 학부 수준에서 학습했던 것 밖에 없어 계속 까먹게 된다.&lt;/p&gt;
+
+&lt;p&gt;최근 Salt에 대한 이야기를 나눌 기회가 있었는데, ‘이전 프로젝트에서 다뤘었고 암호에 랜덤한 값을 추가한다’라는 이야기만 할 수 있었다.&lt;/p&gt;
+
+&lt;p&gt;다시 볼 때가 되었구나 싶어 찾아보게 되었고, 잘 정리된 글이 있어서 보면서 다시 리마인드 했다.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;보통 비밀번호를 저장할 때 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SHA-256&lt;/code&gt; 같은 단방향 해시함수를 통해 나온 결과를 저장한다. 이 때 이 결과를 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;다이제스트(digest)&lt;/code&gt;라고 한다.&lt;/p&gt;
+
+&lt;p&gt;단방향 해시함수는 복호화가 불가능하기 때문에 추후 인증 과정에 들어온 값의 다이제스트과 저장한 다이제스트를 비교하여 인증 성공여부를 결정한다.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;그러면 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;이것만으로도 안전한 것 아닐까? 해시 값은 유출되더라도 복호화가 되지 않으니?&lt;/code&gt;라고 할 수 있지만, 실상은 그렇지 않다고 한다.&lt;/p&gt;
+
+&lt;p&gt;왜냐하면 많이 사용되는 단방향 알고리즘에 대해서 다양한 문자열 비밀번호들에 대한 다이제스트를 모아놓는 ‘레인보우 테이블’들이 존재하고, 이를 활용해 비밀번호를 유추해볼 수 있기 때문이다.&lt;/p&gt;
+
+&lt;p&gt;또한 이 뿐만 아니라 브루트포스 방식을 통해 비밀번호를 맞춰보려고 하는데, 단순한 해시함수를 사용한다면 적은 시간 내 더 많은 해시함수를 돌려서 비밀번호를 유추해볼 수 있으므로 해커에게 좋은 상황이 될 수 있다.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;그러면 이러한 문제를 해결하기 위해 어떠한 방법을 사용할까?&lt;/p&gt;
+
+&lt;p&gt;글에서는 2가지 방법이 소개되었는데 Key stretching과 Salt이다. 또한, 이 둘을 혼합해 활용할 수도 있다.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Key Stretching은 단방향 해시함수를 단 한 번 실행하는 것이 아니라 N번 수행하는 것이다.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;해시함수를 사용한 결과물에 대해 다시 해시함수를 적용하면서 기존 Plain 비밀번호를 더 숨키고자 하는 것이다.&lt;/p&gt;
+
+&lt;p&gt;이를 사용하면 위에서 언급했던 레인보우 테이블에서 비밀번호를 유추하기 어려워지고, 해커 입장에서 브루트포스를 하는데 더 많은 연산이 들어가게 되어 많은 시간이 걸리게 만들 수 있다.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;하지만 레인보우 테이블에서도 특정 다이제스트에 대해 몇 번 해시함수를 수행하였는가까지 기록하고 있는 경우가 많다고 한다. 즉, N 번 실행하였어도 그 결과에 대한 원문을 유추해볼 수 있는 것이다.&lt;/p&gt;
+
+&lt;p&gt;그리고 추가적인 문제가 있는데, 여러 사이트들이 다 같은 단방향 해시함수를 사용하고 있는 상황에서 유저가 여러 사이트에 대해 다 같은 비밀번호를 사용하고 있을 경우, 한 사이트에서 비밀번호가 유출되버리면 모든 사이트에 대해서도 유출된 것과 마찬가지가 되어버린다.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;이런 문제를 막기 위해 등장한 것이 Salt이다. 비밀번호에 특정 무작위한 문자열을 더해 기존 비밀번호에 복잡성/무작위성을 더하는 것이다 (음식에 소금치듯 말이다). Salt를 더한 비밀번호를 해시함수를 통해 암호화해서 저장하게 된다.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;특정 유저에 대해 Salt를 생성해 활용하는 과정에서 유저의 정보에 Salt도 저장해야만 한다. 추후 비밀번호 인증 시에도 Salt를 더해 인증해야하기 때문이다.&lt;/p&gt;
+
+&lt;p&gt;결국, 이러한 Salt는 운영되는 사이트마다 다를 수 밖에 없고 한 사이트에서 다이제스트가 유출되어도 다른 사이트에서는 다 다르게 구성되어서 유추하기 더 어려워질 것이다. 또한 레인보우 테이블에서 원본 값이 찾아졌어도 Salt가 더해져있는 값이기에 Salt까지 알아내지 않는 한 비밀번호 원문을 유추하기 어려워진다.&lt;/p&gt;
+
+&lt;p&gt;근데 당연히 Salt도 단순하게 만들거나 짧게 만들면 그렇게 효과적이지 못하다. 위 링크 글의 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Generating a Good Random Salt&lt;/code&gt;을 참조하자.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;위에서 언급한 Key stretching 방식과 Salt 방식을 혼합해 활용하면 더 안전한 방식의 암호화가 가능해진다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://user-images.githubusercontent.com/37873745/192129075-133bc37d-d7cb-4c4f-a6e9-26d3ecd1b71e.png&quot; alt=&quot;hashsalt&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;근데 사실 위 링크 글에서는 이러한 과정을 직접 개발하는 것은 잘못 이해한 것을 바탕으로 만들어 질 수 있어서 오히려 위험이 될 수 있다고 이야기한다 (보안업체에서 작성한 글인 것을 감안할 것). 그러므로 원리를 이해하고 이미 잘 구현되어 있는 구현체들을 활용하는 편이 좋을 수도 있다는 생각이 들었다.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;A misstep in your home-made security strategy may lead to extensive damage to your business, users, and reputation.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>#2 News</title>
@@ -86,6 +307,8 @@
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
+&lt;hr /&gt;
+
 &lt;h1 id=&quot;프로그래머가-이메일에-대해-믿는-거짓들&quot;&gt;프로그래머가 이메일에 대해 믿는 거짓들&lt;/h1&gt;
 
 &lt;p&gt;&lt;a href=&quot;https://news.hada.io/topic?id=7332&amp;amp;utm_source=slack&amp;amp;utm_medium=bot&amp;amp;utm_campaign=T012P6ABDHQ&quot;&gt;(Link) 프로그래머가 이메일에 대해 믿는 거짓들&lt;/a&gt;&lt;/p&gt;
@@ -98,6 +321,8 @@
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
+&lt;hr /&gt;
+
 &lt;h1 id=&quot;awesome-falsehood&quot;&gt;Awesome Falsehood&lt;/h1&gt;
 
 &lt;p&gt;&lt;a href=&quot;https://github.com/kdeldycke/awesome-falsehood&quot;&gt;(Link) Github Awesome Falsehood&lt;/a&gt;&lt;/p&gt;
@@ -109,6 +334,8 @@
 &lt;p&gt;만약 해당 도메인을 다룬다거나 한다면, 개발 전에 한번 읽어보고 믿지 말아야 하는 것들을 리마인드 해보는 것도 좋겠다.&lt;/p&gt;
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
 
 &lt;h1 id=&quot;iphone-14-pro-및-iphone-14-pro-max&quot;&gt;iPhone 14 Pro 및 iPhone 14 Pro Max&lt;/h1&gt;
 
@@ -127,6 +354,8 @@
 &lt;p&gt;하지만 Apple은 Apple인가보다. 사람들에게 어색할 수 있는? 아름답게 느껴지지 않는 펀치홀 디자인을 UI요소로, 사용자와의 Interaction요소로 추가해 활용하고, 또 이에 맞는 완벽한 단어인 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Dynamic Island&lt;/code&gt; 로 마케팅을 한다니. 존경스럽다.&lt;/p&gt;
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
 
 &lt;h1 id=&quot;kubernetes-security-checklist&quot;&gt;Kubernetes Security Checklist&lt;/h1&gt;
 
