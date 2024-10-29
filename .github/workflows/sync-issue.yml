@@ -51,15 +51,20 @@ jobs:
           title = issue['title']
           body = issue['body'] or ''
           
-          # 파일명 생성
-          filename = f"docs/issues/{issue_number}-{title.lower().replace(' ', '-')}.md"
+          # 현재 날짜 가져오기 (UTC 기준)
+          current_date = datetime.utcnow().strftime('%Y-%m-%d')
+          
+          # 파일명 생성 (날짜-이슈제목.md)
+          safe_title = title.lower().replace(' ', '-')
+          # 파일명에 사용할 수 없는 문자 제거
+          safe_title = ''.join(c for c in safe_title if c.isalnum() or c in '-_')
+          filename = f"_posts/{current_date}-{issue_number}-{safe_title}.md"
           
           # 디렉토리가 없으면 생성
           os.makedirs(os.path.dirname(filename), exist_ok=True)
           
           # 마크다운 파일 생성/수정
           with open(filename, 'w', encoding='utf-8') as f:
-              f.write(f"# {title}\n\n")
               f.write(body)
               f.write(f"\n\nLast updated: {datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')} UTC")
           
@@ -75,7 +80,7 @@ jobs:
           # 완료 코멘트 추가
           comments_url = f"{GITHUB_API}/repos/{repo_full_name}/issues/{issue_number}/comments"
           comment_data = {
-              "body": "💃🏻 Publish complete 🕺🏻"
+              "body": "🚀 Publish complete 🌎"
           }
           requests.post(comments_url, headers=headers, json=comment_data)
         env:
@@ -101,6 +106,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests
 
+      
       - name: Remove Markdown
         run: |
           import os
@@ -123,9 +129,8 @@ jobs:
           
           issue_number = event['issue']['number']
           repo_full_name = event['repository']['full_name']
-          
           # 해당 이슈 번호를 가진 파일 찾기
-          files = glob.glob(f"docs/issues/{issue_number}-*.md")
+          files = glob.glob(f"_posts/*{issue_number}-*.md")
           
           if files:
               # Git 설정
@@ -139,11 +144,11 @@ jobs:
               
               os.system(f'git commit -m "sync: Remove markdown for issue #{issue_number} (label removed)"')
               os.system('git push')
-              
+
               # 삭제 완료 코멘트 추가
               comments_url = f"{GITHUB_API}/repos/{repo_full_name}/issues/{issue_number}/comments"
               comment_data = {
-                  "body": "🗑️ Markdown file has been removed due to label removal"
+                  "body": "🗑️ Markdown file has been removed 🗑️"
               }
               requests.post(comments_url, headers=headers, json=comment_data)
         env:
