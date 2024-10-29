@@ -58,7 +58,7 @@ jobs:
           safe_title = title.lower().replace(' ', '-')
           # 파일명에 사용할 수 없는 문자 제거
           safe_title = ''.join(c for c in safe_title if c.isalnum() or c in '-_')
-          filename = f"_posts/{current_date}-{issue_number}-{safe_title}.md"
+          filename = f"_posts/{current_date}-issue#{issue_number}-{safe_title}.md"
           
           # 디렉토리가 없으면 생성
           os.makedirs(os.path.dirname(filename), exist_ok=True)
@@ -130,7 +130,7 @@ jobs:
           issue_number = event['issue']['number']
           repo_full_name = event['repository']['full_name']
           # 해당 이슈 번호를 가진 파일 찾기
-          files = glob.glob(f"_posts/*{issue_number}-*.md")
+          files = glob.glob(f"_posts/*issue#{issue_number}-*.md")
           
           if files:
               # Git 설정
@@ -189,7 +189,7 @@ jobs:
           issue_number = event['issue']['number']
           
           # 해당 이슈 번호를 가진 파일 찾기
-          files = glob.glob(f"docs/issues/{issue_number}-*.md")
+          files = glob.glob(f"_posts/*issue#{issue_number}-*.md")
           
           if files:
               # Git 설정
