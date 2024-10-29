@@ -4,24 +4,13 @@
  <title>KimDoubleB</title>
  <link href="https://kimdoubleb.github.io/news/atom.xml" rel="self"/>
  <link href="https://kimdoubleb.github.io/news/"/>
- <updated>2024-10-30T01:02:45+09:00</updated>
+ <updated>2024-10-30T01:03:20+09:00</updated>
  <id>https://kimdoubleb.github.io</id>
  <author>
    <name>KimDoubleB</name>
    <email>deadlock@kakao.com</email>
  </author>
 
- 
- <entry>
-   <title>한번 해봅시다</title>
-   <link href="https://kimdoubleb.github.io/news/2024/10/29/4-sample-publish"/>
-   <updated>2024-10-29T00:00:00+09:00</updated>
-   <id>https://kimdoubleb.github.io/2024/10/29/4-sample-publish</id>
-   <content type="html">&lt;p&gt;테스트 용도로 publish 해봅니다.&lt;/p&gt;
-
-&lt;p&gt;Last updated: 2024-10-29 15:56:39 UTC&lt;/p&gt;
-</content>
- </entry>
  
  <entry>
    <title>#4 News</title>

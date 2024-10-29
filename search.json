@@ -1,15 +1,6 @@
 [
   
     {
-      "title"    : "한번 해봅시다",
-      "description" : "테스트 용도에요",
-      "category" : "",
-      "tags"     : "tech",
-      "url"      : "/news/2024/10/29/4-sample-publish",
-      "date"     : "2024-10-29 00:00:00 +0900"
-    } ,
-  
-    {
       "title"    : "#4 News",
       "description" : "2023.05.14 News",
       "category" : "",
