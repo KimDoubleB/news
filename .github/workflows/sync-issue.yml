@@ -75,7 +75,7 @@ jobs:
           # 완료 코멘트 추가
           comments_url = f"{GITHUB_API}/repos/{repo_full_name}/issues/{issue_number}/comments"
           comment_data = {
-              "body": "Publish complete"
+              "body": "💃🏻 Publish complete 🕺🏻"
           }
           requests.post(comments_url, headers=headers, json=comment_data)
         env:
@@ -143,7 +143,7 @@ jobs:
               # 삭제 완료 코멘트 추가
               comments_url = f"{GITHUB_API}/repos/{repo_full_name}/issues/{issue_number}/comments"
               comment_data = {
-                  "body": "Markdown file has been removed due to label removal"
+                  "body": "🗑️ Markdown file has been removed due to label removal"
               }
               requests.post(comments_url, headers=headers, json=comment_data)
         env:
