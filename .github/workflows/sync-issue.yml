@@ -66,7 +66,6 @@ jobs:
           # 마크다운 파일 생성/수정
           with open(filename, 'w', encoding='utf-8') as f:
               f.write(body)
-              f.write(f"\n\nLast updated: {datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')} UTC")
           
           # Git 설정
           os.system('git config --global user.name "github-actions[bot]"')
