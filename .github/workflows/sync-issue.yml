@@ -1,14 +1,12 @@
 name: Sync Issues to Markdown
 
 on:
-  issue_comment:
-    types: [created, edited]
   issues:
-    types: [deleted]
+    types: [labeled, unlabeled, deleted]
 
 jobs:
-  check-comment-and-sync:
-    if: github.event_name == 'issue_comment' && (github.event.action == 'created' || github.event.action == 'edited')
+  check-label-and-sync:
+    if: github.event.action == 'labeled' && contains(github.event.label.name, 'Ready to publish')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -20,8 +18,14 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.13'
+          cache: 'pip'
+          
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
 
-      - name: Check Comment and Process
+      - name: Process Issue
         run: |
           import os
           import json
@@ -42,22 +46,11 @@ jobs:
               event = json.load(f)
           
           # 이슈 정보 가져오기
-          issue_number = event['issue']['number']
+          issue = event['issue']
+          issue_number = issue['number']
           repo_full_name = event['repository']['full_name']
-          
-          # 현재 코멘트가 'Ready to publish'인지 확인
-          current_comment = event['comment']['body'].strip().lower()
-          if current_comment != 'Ready to publish':
-              print("Not a publish trigger comment")
-              exit(0)
-          
-          # 이슈 상세 정보 가져오기
-          issue_url = f"{GITHUB_API}/repos/{repo_full_name}/issues/{issue_number}"
-          issue_response = requests.get(issue_url, headers=headers)
-          issue_data = issue_response.json()
-          
-          title = issue_data['title']
-          body = issue_data['body']
+          title = issue['title']
+          body = issue['body'] or ''
           
           # 파일명 생성
           filename = f"docs/issues/{issue_number}-{title.lower().replace(' ', '-')}.md"
@@ -90,8 +83,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         shell: python
 
-  delete-markdown:
-    if: github.event_name == 'issues' && github.event.action == 'deleted'
+  remove-on-unlabel:
+    if: github.event.action == 'unlabeled' && contains(github.event.label.name, 'Ready to publish')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -103,12 +96,88 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.13'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+
+      - name: Remove Markdown
+        run: |
+          import os
+          import json
+          import glob
+          import requests
+          
+          # GitHub API 설정
+          GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
+          GITHUB_API = "https://api.github.com"
+          headers = {
+              "Authorization": f"Bearer {GITHUB_TOKEN}",
+              "Accept": "application/vnd.github.v3+json"
+          }
+          
+          # 이벤트 데이터 읽기
+          event_path = os.getenv('GITHUB_EVENT_PATH')
+          with open(event_path, 'r', encoding='utf-8') as f:
+              event = json.load(f)
+          
+          issue_number = event['issue']['number']
+          repo_full_name = event['repository']['full_name']
+          
+          # 해당 이슈 번호를 가진 파일 찾기
+          files = glob.glob(f"docs/issues/{issue_number}-*.md")
+          
+          if files:
+              # Git 설정
+              os.system('git config --global user.name "github-actions[bot]"')
+              os.system('git config --global user.email "github-actions[bot]@users.noreply.github.com"')
+              
+              # 파일 삭제 및 커밋
+              for file in files:
+                  os.remove(file)
+                  os.system(f'git add "{file}"')
+              
+              os.system(f'git commit -m "sync: Remove markdown for issue #{issue_number} (label removed)"')
+              os.system('git push')
+              
+              # 삭제 완료 코멘트 추가
+              comments_url = f"{GITHUB_API}/repos/{repo_full_name}/issues/{issue_number}/comments"
+              comment_data = {
+                  "body": "Markdown file has been removed due to label removal"
+              }
+              requests.post(comments_url, headers=headers, json=comment_data)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: python
+
+  delete-markdown:
+    if: github.event.action == 'deleted'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
 
       - name: Delete Markdown
         run: |
           import os
           import json
           import glob
+          import requests
           
           # 이벤트 데이터 읽기
           event_path = os.getenv('GITHUB_EVENT_PATH')
