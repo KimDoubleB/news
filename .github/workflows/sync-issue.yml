@@ -1,0 +1,88 @@
+name: Sync Issues to Markdown
+
+on:
+  issues:
+    types: [opened, edited, deleted]
+
+jobs:
+  sync-issues:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Create or Update Markdown
+        if: github.event.action != 'deleted'
+        run: |
+          import os
+          import json
+          import sys
+          
+          # 이벤트 데이터 읽기
+          event_path = os.getenv('GITHUB_EVENT_PATH')
+          with open(event_path, 'r', encoding='utf-8') as f:
+              event = json.load(f)
+          
+          issue = event['issue']
+          title = issue['title']
+          body = issue['body']
+          issue_number = issue['number']
+          
+          # 파일명 생성 (이슈 번호 포함)
+          filename = f"docs/issues/{issue_number}-{title.lower().replace(' ', '-')}.md"
+          
+          # 디렉토리가 없으면 생성
+          os.makedirs(os.path.dirname(filename), exist_ok=True)
+          
+          # 마크다운 파일 생성/수정
+          with open(filename, 'w', encoding='utf-8') as f:
+              f.write(f"# {title}\n\n")
+              f.write(body)
+          
+          # Git 설정
+          os.system('git config --global user.name "github-actions[bot]"')
+          os.system('git config --global user.email "github-actions[bot]@users.noreply.github.com"')
+          
+          # 변경사항 커밋
+          os.system(f'git add "{filename}"')
+          os.system(f'git commit -m "sync: Update issue #{issue_number} to markdown"')
+          os.system('git push')
+        shell: python
+
+      - name: Delete Markdown
+        if: github.event.action == 'deleted'
+        run: |
+          import os
+          import json
+          import glob
+          
+          # 이벤트 데이터 읽기
+          event_path = os.getenv('GITHUB_EVENT_PATH')
+          with open(event_path, 'r', encoding='utf-8') as f:
+              event = json.load(f)
+          
+          issue_number = event['issue']['number']
+          
+          # 해당 이슈 번호를 가진 파일 찾기
+          files = glob.glob(f"docs/issues/{issue_number}-*.md")
+          
+          if files:
+              # Git 설정
+              os.system('git config --global user.name "github-actions[bot]"')
+              os.system('git config --global user.email "github-actions[bot]@users.noreply.github.com"')
+              
+              # 파일 삭제 및 커밋
+              for file in files:
+                  os.remove(file)
+                  os.system(f'git add "{file}"')
+              
+              os.system(f'git commit -m "sync: Remove markdown for deleted issue #{issue_number}"')
+              os.system('git push')
+        shell: python
