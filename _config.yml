@@ -1,6 +1,6 @@
 site: KimDoubleB
 title: KimDoubleB
-greetings: KimDoubleB news 👋
+greetings: KimDoubleB 🧠
 description: >-
   Code never lies
 lang: ko
@@ -28,6 +28,9 @@ baseurl: "/news"
 # url: "http://localhost:4000" # 
 # baseurl: "" # 
 permalink: pretty
+
+# Analytics
+google_analytics: G-VX0GEM4CBS
 
 
 

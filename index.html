@@ -45,10 +45,26 @@ layout: default
     <h2>BLOG</h2>
     <ul>
         {% for post in site.posts %}
+        {% if post.type == 'blog' or post.type == nil %}
         <li>
 		<a href="{{ site.url }}{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>
             <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%b %d, %Y" }}</time>
         </li>
+        {% endif %}
+        {% endfor %}
+    </ul>
+</section>
+
+<section class="posts" id="News">
+    <h2>NEWS</h2>
+    <ul>
+        {% for post in site.posts %}
+        {% if post.type == 'news' %}
+        <li>
+		<a href="{{ site.url }}{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>
+            <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%b %d, %Y" }}</time>
+        </li>
+        {% endif %}
         {% endfor %}
     </ul>
 </section>

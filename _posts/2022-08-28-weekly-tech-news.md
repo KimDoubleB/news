@@ -5,6 +5,7 @@ description: Weekly tech news를 시작해보겠습니다.
 summary: Weekly tech news를 시작 !
 tags: blog tech
 minute: 1
+type: news
 ---
 
 배우는 것을 정리하며 [블로그 글](https://binux.tistory.com/)을 작성하고 있지만, 글을 작성하는 시간이 꽤 걸리다보니 배운 것들을 다 정리하지 못하고 노션에 기록만 해두는 것이 많다.
