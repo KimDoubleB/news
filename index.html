@@ -41,11 +41,11 @@ layout: default
     <ul id="search-results"></ul>
 </div>
 
-<section class="posts" id="Blog">
-    <h2>BLOG</h2>
+<section class="posts" id="Post">
+    <h2>POST</h2>
     <ul>
         {% for post in site.posts %}
-        {% if post.type == 'blog' or post.type == nil %}
+        {% if post.type == 'post' or post.type == 'blog' or post.type == nil %}
         <li>
 		<a href="{{ site.url }}{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>
             <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%b %d, %Y" }}</time>

@@ -1,8 +1,8 @@
 ---
 layout: post
-title: KimDoubleB의 Weekly tech news !
-description: Weekly tech news를 시작해보겠습니다.
-summary: Weekly tech news를 시작 !
+title: Weekly Tech News 시작
+description: 배운 것들을 가볍게 정리하는 Weekly tech news 시작
+summary: 학습한 기술들을 주기적으로 정리하고 공유하는 Weekly tech news 시작
 tags: blog tech
 minute: 1
 type: news

@@ -177,7 +177,42 @@ a {
 
 .meta {
 	margin: 1.4rem 0;
+}
 
+.tags-label {
+	font-weight: bold;
+	color: var(--main-text-color);
+	font-size: 0.9rem;
+}
+
+.tags-list a {
+	display: inline;
+	padding: 0;
+	margin: 0 0.2rem 0 0;
+	background-color: transparent;
+	font-size: 0.85rem;
+	text-decoration: none;
+	color: var(--link-color);
+	transition: color 0.2s ease;
+}
+
+.tags-list a:hover {
+	color: var(--link-color);
+	text-decoration: underline;
+	opacity: 0.8;
+}
+
+/* GitHub, LinkedIn 링크 스타일 - bash 터미널 초록색 */
+a[href*="github.com"],
+a[href*="linkedin.com"] {
+	color: #00d4aa !important;
+	text-decoration: none;
+}
+
+a[href*="github.com"]:hover,
+a[href*="linkedin.com"]:hover {
+	color: #00ff41 !important;
+	text-decoration: underline;
 }
 
 code,
@@ -338,7 +373,29 @@ b {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	font-weight: bold;
+}
+
+/* NEWS 섹션 링크 색상 - 보라색 계열 */
+#News .posts li a,
+#News.posts li a {
+	color: #8b5cf6;
+}
+
+#News .posts li a:hover,
+#News.posts li a:hover {
+	color: #7c3aed;
+}
+
+/* POST 섹션 링크 색상 - 기본 색상 */
+#Post .posts li a,
+#Post.posts li a {
+	color: var(--link-color);
+}
+
+#Post .posts li a:hover,
+#Post.posts li a:hover {
+	color: var(--link-color);
+	opacity: 0.8;
 }
 
 .posts li time,

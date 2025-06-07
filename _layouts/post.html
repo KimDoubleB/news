@@ -14,9 +14,13 @@ layout: default
   <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%b %-d, %Y" }} -  
     {% if page.minute %} {{ page.minute }} {% else %} {{ minute }} {% endif %}' read</time>
   <h1 class="title">{{ page.title }}</h1>
-  <span class="meta">
-    {% for tag in page.tags %}
-    <a href="{{ site.url }}{{ site.baseurl }}/tag/{{tag}}">{{tag}}</a>{% unless forloop.last %}, {% endunless %}{% endfor %}</span>
+  <div class="meta">
+    <span class="tags-label">🏷️ Tags: </span>
+    <span class="tags-list">
+      {% for tag in page.tags %}
+      <a href="{{ site.url }}{{ site.baseurl }}/tag/{{tag}}">{{tag}}</a>{% unless forloop.last %}, {% endunless %}{% endfor %}
+    </span>
+  </div>
   {{ content }}
 </section>
 
