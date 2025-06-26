@@ -1,8 +1,8 @@
 [
   
     {
-      "title"    : "#4 News",
-      "description" : "2023.05.14 News",
+      "title"    : "Monolith vs MSA 아키텍처 / 오픈소스 생태계 / Transactional Outbox 패턴",
+      "description" : "Monolith와 MSA 선택 기준, 오픈소스 개발자를 위한 tea 프로젝트, PostgreSQL Transactional Outbox 패턴",
       "category" : "",
       "tags"     : "monolith,, msa,, architecture,, aws,, opensource,, brew,, transactional-outboxing,, postgreSQL,, spring,, event,, message,, transaction",
       "url"      : "/news/2023/05/14/4-news",
@@ -10,8 +10,17 @@
     } ,
   
     {
-      "title"    : "#3 News",
-      "description" : "2022.09.25 News",
+      "title"    : "Spring Boot - API Versioning",
+      "description" : "Spring Boot에서 API 버전 관리하는 4가지 방법",
+      "category" : "",
+      "tags"     : "spring-boot, api, versioning, java",
+      "url"      : "/news/2023/04/16/spring-boot-api-versioning",
+      "date"     : "2023-04-16 00:00:00 +0900"
+    } ,
+  
+    {
+      "title"    : "R2DBC Pagination / Stream 성능 / 비밀번호 암호화",
+      "description" : "Spring data r2dbc pagination 구현, Java Stream vs for-loop 성능 비교, 비밀번호 Hash/Salt 암호화",
       "category" : "",
       "tags"     : "r2dbc,, pagination,, java,, stream,, encryption,, salt,, security",
       "url"      : "/news/2022/09/25/3-news",
@@ -19,8 +28,8 @@
     } ,
   
     {
-      "title"    : "#2 News",
-      "description" : "2022.09.11 News",
+      "title"    : "MySQL Spatial 쿼리 / 개발자가 믿는 거짓들 / iPhone 14 Pro",
+      "description" : "MySQL 공간 데이터 처리, 프로그래머가 이메일에 대해 믿는 거짓들, iPhone 14 Pro Dynamic Island",
       "category" : "",
       "tags"     : "spatial, mysql, kubernetes, falsehood, iphone, architecture",
       "url"      : "/news/2022/09/11/2-news",
@@ -28,8 +37,8 @@
     } ,
   
     {
-      "title"    : "#1 News",
-      "description" : "2022.09.04 News",
+      "title"    : "Reactor Pagination / 오픈소스 / Java 17 신기능 정리",
+      "description" : "Reactor expand를 활용한 Pagination, 오픈소스 대체제 등장 시간, Java 17 주요 기능들",
       "category" : "",
       "tags"     : "reactor, opensource, java",
       "url"      : "/news/2022/09/04/1-news",
@@ -37,8 +46,8 @@
     } ,
   
     {
-      "title"    : "KimDoubleB의 Weekly tech news !",
-      "description" : "Weekly tech news를 시작해보겠습니다.",
+      "title"    : "Weekly Tech News 시작",
+      "description" : "배운 것들을 가볍게 정리하는 Weekly tech news 시작",
       "category" : "",
       "tags"     : "blog, tech",
       "url"      : "/news/2022/08/28/weekly-tech-news",
