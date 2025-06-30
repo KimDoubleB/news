@@ -4,13 +4,34 @@
  <title>KimDoubleB</title>
  <link href="https://kimdoubleb.github.io/news/atom.xml" rel="self"/>
  <link href="https://kimdoubleb.github.io/news/"/>
- <updated>2025-06-30T21:45:19+09:00</updated>
+ <updated>2025-06-30T23:46:25+09:00</updated>
  <id>https://kimdoubleb.github.io</id>
  <author>
    <name>KimDoubleB</name>
    <email>deadlock@kakao.com</email>
  </author>
 
+ 
+ <entry>
+   <title>[생각] AI와 개발자의 성장/생산성 향상</title>
+   <link href="https://kimdoubleb.github.io/news/2025/06/30/ai-personal-thinking"/>
+   <updated>2025-06-30T00:00:00+09:00</updated>
+   <id>https://kimdoubleb.github.io/2025/06/30/ai-personal-thinking</id>
+   <content type="html">&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;[생각]&lt;/code&gt; 글은 개인의 생각을 작성한 글이다.&lt;/p&gt;
+
+&lt;p&gt;논문 같은 것에 입각한 사실을 전달하는 것이 아닌, 내가 삶을 살아가며 느낀 생각들을 정리했다.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;mark&gt;AI 기술, 특히 고도화된 코딩 에이전트(Coding Agent)는 개발자의 장기적인 성장을 저해할 수 있다.&lt;/mark&gt; 개발자의 성장은 본인의 생각으로 문제를 해결하고 코드를 구현하는 과정에서 느끼는 ‘성취감’을 핵심 동력으로 삼는다. 그런데 AI는 바로 이 성취감을 얻는 경험 자체를 위협하기에, 성장을 저해할 수 있는 것이다. 예를 들어, 초기 LLM은 모르는 것을 질문하고 배우는 ‘학습 도우미’ 역할을 했다. 하지만 Cursor와 같은 최신 코딩 에이전트는 몇 가지 요청만으로 완전한 기능의 코드를 생성해준다. 바로 이 지점에서 개발자는 &lt;strong&gt;“내가 코드를 ‘개발’한 것인가, 단순히 ‘요청’한 것인가?”라는 근본적인 의구심에 부딪히게 된다.&lt;/strong&gt; 이러한 의구심은 개발자에게 ‘내가 해냈다’는 성취감을 주기 어려우며, 성장을 위한 동기부여 또한 약화시킬 수 있다. 이처럼 AI가 개발 과정의 핵심인 문제 해결 경험을 대신하게 되면서, 장기적으로 개발자의 성장 동력을 앗아갈 위험이 있다.&lt;/p&gt;
+
+&lt;p&gt;&lt;mark&gt;하지만 개발자의 성장 문제와는 별개로, AI는 개발 생산성 향상에 매우 긍정적인 영향을 미친다.&lt;/mark&gt; AI는 반복적이거나 정형화된 작업에 소요되는 개발자의 시간을 획기적으로 줄여, 더 중요한 문제에 집중할 수 있도록 돕기 때문이다. 가령, 프로젝트 초기 설정에 필요한 보일러플레이트 코드를 작성하거나, 패턴이 정해진 테스트 코드를 만드는 작업을 AI에게 맡길 수 있다. 또한 복잡한 레거시 코드를 분석하고 이해하는 시간도 크게 단축시킬 수 있다. 결론적으로 &lt;strong&gt;AI는 개발자가 핵심적인 문제 해결에 더 집중하도록 도와, 팀과 기업의 전체적인 생산성을 크게 높이는 강력한 도구임이 분명&lt;/strong&gt;하다.&lt;/p&gt;
+
+&lt;p&gt;&lt;mark&gt;AI가 가져오는 생산성 향상을 개발자 개인의 성장으로 착각해서는 안 된다.&lt;/mark&gt; 빠른 결과물에 익숙해질수록 AI에 대한 의존성은 깊어질 수밖에 없다. 그리고 &lt;strong&gt;역설적이게도, AI 없이는 스스로 문제를 해결하기 어려운 개발자야말로 AI 기술 시대에 가장 먼저 대체될 수 있는 존재일 것&lt;/strong&gt;이다. 따라서 우리는 AI를 적극적으로 활용하되, 끊임없이 자신의 성장 상태를 성찰해야 한다. 또한 의도적으로 AI에 의존하지 않고 기본기를 다지는 학습과 훈련을 반드시 병행할 필요가 있다.&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>&apos;나의 일을 커리어로 연결하는 법&apos;을 듣고</title>
