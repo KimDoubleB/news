@@ -43,6 +43,7 @@ html[data-theme="light"] {
 	--highlight-text-color: #6cb4a0;
 	--dark-text-color: #393e46;
 	--link-color: rgb(50, 87, 209);
+	--mark-color: #4B0082;
 	--code-bg-color: rgb(245, 245, 245);
 
 	background-color: rgb(255, 255, 255);
@@ -107,6 +108,7 @@ html[data-theme="dark"] {
 	--highlight-text-color: #6cb4a0;
 	--dark-text-color: rgb(36, 38, 42);
 	--link-color: rgb(255, 89, 125);
+	--mark-color: #9356c1;
 	--code-bg-color: rgb(36, 38, 42);
 	background-color: rgb(19, 20, 24);
 
@@ -171,7 +173,7 @@ a {
 }
 
 .post p {
-	margin: 1rem 0;
+	margin: 0.5rem 0;
   word-break: keep-all;
 }
 
@@ -353,6 +355,7 @@ b {
 .post ul {
 	margin: 0px;
 	margin: 0px 0px 10px 10px;
+	padding-left: 15px;
 }
 
 .post ol {
@@ -510,6 +513,15 @@ background-color: #fffba0;
 color: #333;
 }
 
+mark {
+  background: transparent;
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--mark-color);
+  text-decoration-thickness: 6.5px;
+  text-decoration-skip-ink: none;
+  text-underline-offset: -3px;
+}
 
 .search-article {
   position: relative;
