@@ -19,21 +19,21 @@
     } ,
   
     {
+      "title"    : "Trace Sampling / 트레이스 샘플링",
+      "description" : "",
+      "category" : "",
+      "tags"     : "trace, sampling, observability, opentelemetry",
+      "url"      : "/news/2025/01/17/trace-sampling",
+      "date"     : "2025-01-17 00:00:00 +0900"
+    } ,
+  
+    {
       "title"    : "Monolith vs MSA 아키텍처 / 오픈소스 생태계 / Transactional Outbox 패턴",
       "description" : "Monolith와 MSA 선택 기준, 오픈소스 개발자를 위한 tea 프로젝트, PostgreSQL Transactional Outbox 패턴",
       "category" : "",
       "tags"     : "monolith,, msa,, architecture,, aws,, opensource,, brew,, transactional-outboxing,, postgreSQL,, spring,, event,, message,, transaction",
       "url"      : "/news/2023/05/14/4-news",
       "date"     : "2023-05-14 00:00:00 +0900"
-    } ,
-  
-    {
-      "title"    : "Spring Boot - API Versioning",
-      "description" : "Spring Boot에서 API 버전 관리하는 4가지 방법",
-      "category" : "",
-      "tags"     : "spring-boot, api, versioning, java",
-      "url"      : "/news/2023/04/16/spring-boot-api-versioning",
-      "date"     : "2023-04-16 00:00:00 +0900"
     } ,
   
     {
