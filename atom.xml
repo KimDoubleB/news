@@ -4,7 +4,7 @@
  <title>KimDoubleB</title>
  <link href="https://kimdoubleb.github.io/news/atom.xml" rel="self"/>
  <link href="https://kimdoubleb.github.io/news/"/>
- <updated>2025-07-20T21:59:24+09:00</updated>
+ <updated>2025-08-03T13:59:44+09:00</updated>
  <id>https://kimdoubleb.github.io</id>
  <author>
    <name>KimDoubleB</name>
@@ -17,9 +17,10 @@
    <link href="https://kimdoubleb.github.io/news/2025/06/30/ai-personal-thinking"/>
    <updated>2025-06-30T00:00:00+09:00</updated>
    <id>https://kimdoubleb.github.io/2025/06/30/ai-personal-thinking</id>
-   <content type="html">&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;[생각]&lt;/code&gt; 글은 개인의 생각을 작성한 글이다.&lt;/p&gt;
-
-&lt;p&gt;논문 같은 것에 입각한 사실을 전달하는 것이 아닌, 내가 삶을 살아가며 느낀 생각들을 정리했다.&lt;/p&gt;
+   <content type="html">&lt;p&gt;최근 개발 과정에서 AI(특히 LLM) 사용은 거의 필수적인 것 같다.
+개발 생산성을 급격하게 올려주니 계속 사용을 하곤 있는데, 사용하면 할수록 개발을 하며 얻는 즐거움은 떨어지는 느낌이다.
+뭔가 빠져있는 느낌.
+관련해서 그냥 생각을 정리했다.&lt;/p&gt;
 
 &lt;hr /&gt;
 
